@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+    <script>
+        function calculateLoan() {
+            // Get values from the form
+            const customerName = document.getElementById("customerName").value;
+            const accountNumber = document.getElementById("accountNumber").value;
+            const loanAmount = parseFloat(document.getElementById("loanAmount").value);
+            const loanTerm = parseInt(document.getElementById("loanTerm").value);
+            const interestRate = parseFloat(document.getElementById("interestRate").value);
+            const resultElement = document.getElementById("result");
+
+            // Clear any previous result
+            resultElement.innerHTML = "";
+            resultElement.classList.remove("error", "success");
+
+            // Validate inputs
+            if (customerName.length < 2) {
+                resultElement.innerHTML = "Error: Tên khách hàng quá ngắn";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (customerName.length > 64) {
+                resultElement.innerHTML = "Error: Tên khách hàng quá dài";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (accountNumber.length !== 6 || isNaN(accountNumber)) {
+                resultElement.innerHTML = "Error: Số tài khoản không hợp lệ";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (loanAmount <= 0 || loanAmount > 1000000) {
+                resultElement.innerHTML = "Error: Số tiền vay không hợp lệ";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (loanTerm <= 0) {
+                resultElement.innerHTML = "Error: Thời gian vay quá ngắn";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (loanTerm > 30) {
+                resultElement.innerHTML = "Error: Thời gian vay vượt quá giới hạn";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (interestRate <= 0) {
+                resultElement.innerHTML = "Error: Lãi suất không hợp lệ";
+                resultElement.classList.add("error");
+                return;
+            }
+            if (interestRate > 20) {
+                resultElement.innerHTML = "Error: Lãi suất vượt quá giới hạn";
+                resultElement.classList.add("error");
+                return;
+            }
+
+            // If all validations pass, show success message
+            resultElement.innerHTML = "Success: Tất cả dữ liệu hợp lệ";
+            resultElement.classList.add("success");
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Loan Calculation System</h2>
+    <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input type="text" id="customerName" name="customerName" required>
+    </div>
+    <div class="form-group">
+        <label for="accountNumber">Account Number</label>
+        <input type="text" id="accountNumber" name="accountNumber" required>
+    </div>
+    <div class="form-group">
+        <label for="loanAmount">Loan Amount</label>
+        <input type="number" id="loanAmount" name="loanAmount" required>
+    </div>
+    <div class="form-group">
+        <label for="loanTerm">Loan Term (Years)</label>
+        <input type="number" id="loanTerm" name="loanTerm" required>
+    </div>
+    <div class="form-group">
+        <label for="interestRate">Interest Rate (%)</label>
+        <input type="number" id="interestRate" name="interestRate" required>
+    </div>
+    <button onclick="calculateLoan()">Submit</button>
+
+    <div id="result" class="result"></div>
+</div>
+
+</body>
+</html>
